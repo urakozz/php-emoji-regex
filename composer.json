@@ -1,0 +1,45 @@
+{
+    "name": "kozz/emoji-regex",
+    "type": "library",
+    "description": "Emoji regex parser",
+    "keywords": ["Emoji", "regex", "regexp"],
+    "homepage": "https://github.com/urakozz/php-emoji-regex",
+    "license": "MIT",
+
+    "authors": [
+        {
+            "name": "Yury Kozyrev",
+            "email": "urakozz@gmail.com",
+            "homepage": "https://github.com/urakozz"
+        }
+    ],
+
+    "require": {
+        "php": ">=5.4.0"
+    },
+
+    "suggest": {
+        "php": ">=5.6.8"
+    },
+
+    "autoload": {
+        "psr-4": {
+            "Kozz\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Kozz\\Tests\\": "tests/"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4.2",
+        "codeclimate/php-test-reporter": "dev-master"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
+    },
+    "minimum-stability": "stable"
+}
