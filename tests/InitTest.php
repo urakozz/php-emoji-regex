@@ -24,7 +24,7 @@ class InitTest extends \PHPUnit_Framework_TestCase
 
         $text = "a #💩 #and #🍦 #😳";
         $parser = new EmojiParser();
-        $parser->setPrepend("#\\w+|#");
+        $parser->setPrepend("#(?:[\\w]|");
         $matches = $parser->matchAll($text);
 
         $this->assertNotEmpty($matches);
@@ -49,20 +49,10 @@ class InitTest extends \PHPUnit_Framework_TestCase
         $this->assertGreaterThan(0, preg_match("/^\#\xF0\x9F\x98\xB3$/", $matches[0][3]));
     }
 
-    public function testPattern()
-    {
-        $parser = new EmojiParser();
-        $pattern = $parser->getPattern(null);
-
-        $parser->setPrepend("#");
-        $this->assertEquals("/#".$pattern."/u", $parser->getPattern());
-
-    }
-
     public function testReplaceCallback()
     {
         $parser = new EmojiParser();
-        $parser->setPrepend("#\\w+|#");
+        $parser->setPrepend("#(?:[\\w]|");
         $text = "a #💩 #and or #🍦 #😳";
         $i = 0;
         $matches = [];
