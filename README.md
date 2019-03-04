@@ -5,3 +5,5 @@
 [![Test Coverage](https://codeclimate.com/github/urakozz/php-emoji-regex/badges/coverage.svg)](https://codeclimate.com/github/urakozz/php-emoji-regex/coverage)
 
 Regular Expression Class for parsing Emoji in strings
+
+04.03.2019 - Added all new emoji codes, including composite
