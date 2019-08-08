@@ -64,5 +64,21 @@ class EmojiParser
         return preg_replace_callback($this->getPattern(), $closure, $string);
     }
 
+    /**
+     * Checks if a string contains only of emoji.
+     *
+     * @author ventormo <ventormo@protonmail.com>
+     * @param  string       $string            String for checking.
+     * @param  bool|boolean $ignoreWhitespaces If true, the presence of spaces in the string will not affect the result.
+     * @return boolean                         Does the string consist only of emoji?
+     */
+    public function isOnlyEmoji($string, $ignoreWhitespaces = true) {
+    	$string = $this->replace($string, '');
 
+    	if ($ignoreWhitespaces) {
+    		$string = preg_replace('/\s+/', '', $string);
+    	}
+  
+    	return ($string === "");
+    }
 }
