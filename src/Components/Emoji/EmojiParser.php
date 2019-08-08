@@ -72,9 +72,9 @@ class EmojiParser
      * @param  bool|boolean $ignoreWhitespaces If true, the presence of spaces in the string will not affect the result.
      * @return boolean                         Does the string consist only of emoji?
      */
-    public function isOnlyEmoji(string $string, bool $ignoreWhitespaces = true) {
+    public function isOnlyEmoji($string, $ignoreWhitespaces = true) {
     	$string = $this->replace($string, null);
-    	
+
     	if ($ignoreWhitespaces) {
     		$string = preg_replace('/\s+/', null, $string);
     	}
