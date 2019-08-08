@@ -73,10 +73,10 @@ class EmojiParser
      * @return boolean                         Does the string consist only of emoji?
      */
     public function isOnlyEmoji($string, $ignoreWhitespaces = true) {
-    	$string = $this->replace($string, null);
+    	$string = $this->replace($string, '');
 
     	if ($ignoreWhitespaces) {
-    		$string = preg_replace('/\s+/', null, $string);
+    		$string = preg_replace('/\s+/', '', $string);
     	}
   
     	return ($string === "");
