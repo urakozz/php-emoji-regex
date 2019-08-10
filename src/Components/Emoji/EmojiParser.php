@@ -45,23 +45,72 @@ class EmojiParser
 
     public function match($string, &$matches = null)
     {
-        return preg_match($this->getPattern(), $string, $matches);
+    	$matchesBuffer;
+        $result = preg_match($this->getPattern(), $string, $matchesBuffer);
+
+        if ($result) {
+        	if (preg_match('/[0-9]+/', $matchesBuffer[0])) {
+        		// If the match consists of both emoji and number.
+        		if (!preg_match('/^[0-9]+$/', $matchesBuffer[0])) {
+        			$matchesBuffer[0] = preg_replace('/[0-9]+/', '', $matchesBuffer[0]);
+
+        			$matches = $matchesBuffer;
+        			return $result;
+        		}
+
+        		$string = str_replace($matchesBuffer[0], '', $string);
+
+        		$recurseMatches = null;
+        		$result = $this->match($string, $recurseMatches);
+        		$matchesBuffer = $recurseMatches;
+
+        		$matches = $matchesBuffer;
+        		return $result;
+        	}
+        }
+
+        $matches = $matchesBuffer;
+        return $result;
     }
 
     public function matchAll($string)
     {
         preg_match_all($this->getPattern(), $string, $matches);
+
+        foreach ($matches[0] as $matchIndex => $matchValue) {
+        	if (preg_match('/[0-9]+/', $matchValue)) {
+        		// If the match consists of both emoji and number.
+        		if (!preg_match('/^[0-9]+$/', $matchValue)) {
+        			$matchValue = preg_replace('/[0-9]+/', '', $matchValue);
+        			$matches[0][$matchIndex] = $matchValue;
+        			continue;
+        		}
+
+        		unset($matches[0][$matchIndex]);
+        	}
+        }
+
+        $matches[0] = array_values($matches[0]);
+
         return $matches;
     }
 
     public function replace($string, $replacement)
     {
-        return preg_replace($this->getPattern(), $replacement, $string);
+        return preg_replace_callback($this->getPattern(), function ($matches) use ($replacement) {
+        	foreach ($matches as $matchIndex => $matchValue) {
+        		return preg_replace('/[^0-9]+/', $replacement, $matchValue);
+        	}
+        }, $string);
     }
 
     public function replaceCallback($string, \Closure $closure)
     {
-        return preg_replace_callback($this->getPattern(), $closure, $string);
+        return preg_replace_callback($this->getPattern(), function ($matches) use ($closure) {
+        	return preg_replace_callback('/[^0-9]+/', function ($emoji) use ($closure) {
+        		return $closure($emoji[0]);
+        	}, $matches[0]);
+        }, $string);
     }
 
     /**
