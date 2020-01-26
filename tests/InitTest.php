@@ -81,4 +81,26 @@ class InitTest extends \PHPUnit_Framework_TestCase
         $match = $parser->match($text);
         $this->assertGreaterThan(0, $match);
     }
+
+    public function testMatchNumbers()
+    {
+        $text = "a 3 and a 4";
+        $parser = new EmojiParser();
+        $replaced = $parser->replace($text, "q");
+        $this->assertEquals("a 3 and a 4", $replaced);
+    }
+
+    public function testCompoundSymbolsAndSkinTones()
+    {
+        $text = "a 🧑🏿‍🎓 and a 🧑🏿‍🏫"; // student and teacher emojis
+        $parser = new EmojiParser();
+        $i = 0;
+
+        $replaced = $parser->replaceCallback($text, function($match) use(&$i) {
+            $key = '_$'.$i++.'_';
+            return $key;
+        });
+
+        $this->assertEquals("a _$0_ and a _$1_", $replaced);
+    }
 }
